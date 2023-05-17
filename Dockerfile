@@ -8,7 +8,8 @@ ARG NODE
 
 # Add backports to stretch to give it high priority
 RUN if [ "$RELEASE" = "stretch" ]; then \
-      echo "deb http://ftp.debian.org/debian stretch-backports main" >> /etc/apt/sources.list; \
+      echo "deb http://archive.debian.org/debian stretch main" > /etc/apt/sources.list; \
+      echo "deb http://archive.debian.org/debian stretch-backports main" >> /etc/apt/sources.list; \
       echo "Package: *\nPin: release a=stretch-backports\nPin-Priority: 500" >> /etc/apt/preferences; \
     fi
 
