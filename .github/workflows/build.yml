@@ -13,7 +13,7 @@ jobs:
 #      - if: startsWith(github.ref, 'refs/tags/')
       - run: |
           # stretch-based image with Node 14
-          buildx build \
+          docker buildx build \
             --build-arg RELEASE=stretch \
             --build-arg NODE=14 \
             --platform linux/arm,linux/amd64 \
