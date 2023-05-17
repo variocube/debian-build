@@ -5,16 +5,16 @@
 #
 # There is no automated build setup for this, since this image will only change very rarely.
 #
+# This script requires the `buildx` docker plugin, see https://docs.docker.com/build/install-buildx/
+#
+# This script assumes that you are already logged in into the AWS ECR public through docker.
+# Typically, this is done with a command like:
+# aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/variocube
 
-# You might need to adapt the login for your setup.
-# For this to work a profile named "AdministratorAccess-Variocube" must be present in ~/.aws/config
-# See https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html
-# Also, you might need to login to this profile first:
-#   aws sso login --profile AdministratorAccess-Variocube
-aws ecr-public get-login-password --region us-east-1 --profile AdministratorAccess-Variocube | docker login --username AWS --password-stdin public.ecr.aws/variocube
+set -e
+set -x
 
-# You might need to install Dockers buildx extension on your system.
-docker buildx create --name debian-build-builder
+docker buildx create --name debian-build-builder || true   # Ignore error when builder exists
 docker buildx use debian-build-builder
 
 # stretch-based image with Node 14
@@ -29,7 +29,7 @@ docker buildx build \
 docker buildx build \
   --build-arg RELEASE=bullseye \
   --build-arg NODE=18 \
-  --platform linux/arm,linux/amd64 \
+  --platform linux/arm,linux/amd64,linux/arm64 \
   -t public.ecr.aws/variocube/debian-build:bullseye \
   --push .
 
@@ -37,7 +37,7 @@ docker buildx build \
 docker buildx build \
   --build-arg RELEASE=bullseye \
   --build-arg NODE=18 \
-  --platform linux/arm,linux/amd64 \
+  --platform linux/arm,linux/amd64,linux/arm64 \
   -t public.ecr.aws/variocube/debian-build:latest \
   --push .
 
