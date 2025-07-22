@@ -18,7 +18,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends curl ca-certificates
 RUN curl -fsSL https://deb.nodesource.com/setup_$NODE.x | bash -
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends nodejs devscripts build-essential debhelper
+    && apt-get install -y --no-install-recommends nodejs devscripts build-essential debhelper jq
 
 # Install python2.7 on stretch
 RUN if [ "$RELEASE" = "stretch" ]; then \
