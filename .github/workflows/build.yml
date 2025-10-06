@@ -32,11 +32,19 @@ jobs:
             --platform linux/arm,linux/amd64,linux/arm64 \
             -t ghcr.io/variocube/debian-build:bullseye \
             --push .
-
-          # latest image is currently bullseye
+          
+          # bookworm-based image with Node 22
           docker buildx build \
-            --build-arg RELEASE=bullseye \
-            --build-arg NODE=18 \
+            --build-arg RELEASE=bookworm \
+            --build-arg NODE=22 \
+            --platform linux/arm,linux/amd64,linux/arm64 \
+            -t ghcr.io/variocube/debian-build:bookworm \
+            --push .
+
+          # latest image is currently bookworm
+          docker buildx build \
+            --build-arg RELEASE=bookworm \
+            --build-arg NODE=22 \
             --platform linux/arm,linux/amd64,linux/arm64 \
             -t ghcr.io/variocube/debian-build:latest \
             --push .
